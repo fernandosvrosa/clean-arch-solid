@@ -1,0 +1,14 @@
+server:
+  port: ${SERVER_PORT:9011}
+
+spring:
+  profiles:
+    active: ${ACTIVE_PROFILE:dev}
+  jpa:
+    open-in-view: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
