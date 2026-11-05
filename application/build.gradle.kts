@@ -33,6 +33,7 @@ dependencies {
     implementation("io.springfox:springfox-swagger2:3.0.0")
     implementation("io.springfox:springfox-swagger-ui:3.0.0")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
+    runtimeOnly("org.postgresql:postgresql")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
@@ -42,6 +43,7 @@ dependencies {
     testImplementation("org.mockito:mockito-inline:3.3.3")
     testImplementation("org.mockito:mockito-core:3.5.10")
     testImplementation("com.github.tomakehurst:wiremock-jre8:2.25.1")
+    testImplementation("org.testcontainers:postgresql:1.21.4")
 }
 
 dependencyManagement {

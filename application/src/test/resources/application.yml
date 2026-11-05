@@ -14,5 +14,12 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
 
-
+logging:
+  level:
+    org.springframework.orm.jpa.JpaTransactionManager: DEBUG
+    org.hibernate.SQL: DEBUG
