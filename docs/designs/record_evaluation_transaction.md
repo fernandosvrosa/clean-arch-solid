@@ -1,7 +1,7 @@
 # All-or-Nothing Save of a Student's Evaluation and Answers
 
 *   **Author:** Fernando da Silva Rosa
-*   **Status:** Proposed
+*   **Status:** Approved
 *   **Date:** 2026-10-31
 
 --------------------------------------------------------------------------------
