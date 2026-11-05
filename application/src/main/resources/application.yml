@@ -4,8 +4,14 @@ server:
 spring:
   profiles:
     active: ${ACTIVE_PROFILE:dev}
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/talk}
+    username: ${DATABASE_USERNAME:postgres}
+    password: ${DATABASE_PASSWORD:}
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: none
 
 management:
   endpoints:
