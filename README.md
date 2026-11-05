@@ -22,8 +22,18 @@ The evaluation flow shows how a use case can make two gateway calls succeed or f
 - **Evaluation:** one student's recorded attempt at an exam, with the student's answers.
 
 ## Subdirectories & System Boundaries
-- application: [./application/README.md](./application/README.md) - Spring Boot application with `POST /api/v1/assessment` and `POST /api/v1/assessment/calculator`, gateway adapters, and configuration.
-- domain: [./domain/README.md](./domain/README.md) - Models, use cases, output port interfaces, and exceptions.
+Only folders with logic or architecture contracts have a README. Data-only folders (models, entities, request and response bodies, exceptions, repository interfaces) are described inside the README of the folder that uses them.
+
+- `domain`: business rules, with no Spring dependency. Its build declares only `javax.inject`, for `@Named`.
+  - [assessment use cases](./domain/src/main/kotlin/br/com/talk/assessment/usecase/README.md) - `CreateAssessmentUseCase`, `CalculatorUseCase`, and the `Calculator` strategies.
+  - [assessment ports](./domain/src/main/kotlin/br/com/talk/assessment/gateway/README.md) - `GetQuestionaryGateway` and `SaveAssessmentGateway`.
+  - [evaluation use case](./domain/src/main/kotlin/br/com/talk/evaluation/usecase/README.md) - `RecordEvaluationUseCase`.
+  - [evaluation ports](./domain/src/main/kotlin/br/com/talk/evaluation/gateway/README.md) - `SaveEvaluationGateway`, `SaveAnswersGateway`, and the `TransactionGateway` contract.
+- `application`: the Spring Boot application, started by `Application.kt`.
+  - [assessment HTTP entry point](./application/src/main/kotlin/br/com/talk/assessment/entrypoint/README.md) - `POST /api/v1/assessment` and `POST /api/v1/assessment/calculator`.
+  - [assessment adapters](./application/src/main/kotlin/br/com/talk/assessment/gateway/README.md) - `GetQuestionaryProvider` and `SaveAssessmentProvider`.
+  - [evaluation adapters](./application/src/main/kotlin/br/com/talk/evaluation/gateway/README.md) - `TransactionProvider`, `SaveEvaluationProvider`, and `SaveAnswersProvider`.
+  - [configuration](./application/src/main/kotlin/br/com/talk/config/README.md) - error handling, internationalization, `RestTemplate`, and Swagger.
 
 ## Global Invariants
 - Dependencies point inward: `application` declares `implementation(project(":domain"))`, and `domain` declares no project dependencies.
@@ -34,7 +44,8 @@ The evaluation flow shows how a use case can make two gateway calls succeed or f
 - `CalculatorEnem.execute` and `CalculatorProvinha.execute` are unimplemented `TODO(...)` stubs, so a calculator request with a valid type throws `kotlin.NotImplementedError`.
 
 ## Global Side Effects
-- The application connects to Postgres through `DATABASE_URL`, `DATABASE_USERNAME`, and `DATABASE_PASSWORD`. Hibernate creates no tables (`ddl-auto: none`).
+- The application connects to Postgres through `DATABASE_URL` (default `jdbc:postgresql://localhost:5432/talk`), `DATABASE_USERNAME` (default `postgres`), and `DATABASE_PASSWORD` (default empty). Hibernate creates no tables (`ddl-auto: none`), so a locally started application has no `evaluation` or `answer` tables, and the evaluation feature has no endpoint.
+- The server port comes from `SERVER_PORT` (default `9011`) and the profile from `ACTIVE_PROFILE` (default `dev`). The build declares both the web and WebFlux starters; with both present, Spring Boot runs the servlet stack, which the servlet config needs.
 - The assessment flow is unrepaired: its entities have no tables in any schema, so `POST /api/v1/assessment` fails once it reaches the database.
 - `application.yml` exposes all actuator web endpoints (`management.endpoints.web.exposure.include: "*"`). Do not point the application at a shared database.
 - Swagger is active under the `dev` and `staging` profiles, and `dev` is the default for `ACTIVE_PROFILE`.

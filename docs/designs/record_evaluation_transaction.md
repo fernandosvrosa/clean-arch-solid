@@ -469,6 +469,8 @@ create table answer (
 
 #### Documentation
 
+> **Changed after implementation:** READMEs were later kept only in folders with logic or architecture contracts: use cases, adapters, configuration, and domain gateway ports, plus the root README. The READMEs for models, entities, request and response bodies, exceptions, repository interfaces, modules, and intermediate folders were removed, and their key facts moved into the README of the folder that uses them. Items 21 to 26 describe the original plan.
+
 ##### 21. New package contracts (Create)
 
 *   **Type / Scope**: Documentation.
